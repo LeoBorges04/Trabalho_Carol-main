@@ -12,6 +12,7 @@
 #define FE 10
 #define VERMELHO "\033[1;31m"
 #define VERDE "\033[1;32m"
+#define AZUL "\033[34m"
 #define RESET "\033[0;0m"
 //Acho que vou fazer uma locadora de filmes.
 //precisa ter cadastro de cliente também.
@@ -48,7 +49,8 @@ void cortaFinal(char *s){
 
 
 char* toLowerCase(char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
+    int i;
+	for (i = 0; str[i] != '\0'; i++) {
         str[i] = tolower((unsigned char) str[i]);
     }
     return str;
@@ -62,7 +64,7 @@ void cadastraCliente(TCliente *cliente, int pos){
     cliente[pos].id = pos;
 
     cliente[pos].chave = 0;
-    printf("--Cadastro Cliente--\n\n");
+    printf(AZUL"--Cadastro Cliente--\n\n"RESET);
 
     printf("Nome: ");
     fgets(cliente[pos].nome, MAX-1, stdin);
@@ -98,7 +100,7 @@ void atualizaCliente(TCliente *cliente, int m){
     int id, i, op, sair, chave = 0;
     char resposta[CPF];
     bool encontrou = false;
-    printf("\n--Atualizar dados do Clinete--\n\nDigite o CPF do cliente(apenas números): ");
+    printf(AZUL"\n--Atualizar dados do Clinete--"RESET"\n\nDigite o CPF do cliente(apenas números): ");
     fgets(resposta, CPF - 1, stdin);
     cortaFinal(resposta);
 
@@ -177,7 +179,7 @@ void removeCliente(TCliente *cliente, int m){
     int chave = 0, i;
     bool encontrou = false;
     char cpf[CPF];
-    printf("--Remover cliente--");
+    printf(AZUL"--Remover cliente--"RESET);
     printf("\n\nDigite o cpf do cliente (apenas números): ");
     fgets(cpf, CPF-1, stdin);
     cortaFinal(cpf);
@@ -205,7 +207,7 @@ void removeCliente(TCliente *cliente, int m){
 void imprimeTodosCli(TCliente *cliente, int m){
     int i;
     system("cls");
-    printf("--Lista de clientes--\n\n");
+    printf(AZUL"--Lista de clientes--\n\n"RESET);
     printf("\n---------------------------------------------------\n");
     for(i = 0; i < m; i++){
         if(cliente[i].status){
@@ -227,7 +229,7 @@ void pesquisaCliente(TCliente *cliente, int m){
     bool encontrou = false;
     int i, chave = 0;
     char cpf[MAX];
-    printf("--Pesquisar cliente--\n\nDigite o CPF do cliente: ");
+    printf(AZUL"--Pesquisar cliente--"RESET"\n\nDigite o CPF do cliente: ");
     fgets(cpf, MAX-1, stdin);
 
     for(i = 0; cpf[i] != '\0'; i++){
@@ -265,7 +267,7 @@ void cadastraFilme(TFilme *filme, int pos){
     filme[pos].id = pos;
     filme[pos].status = true;
 
-    printf("--Cadastrar filme--\n\nNome do filme: ");
+    printf(AZUL"--Cadastrar filme--"RESET"\n\nNome do filme: ");
     fgets(filme[pos].nome, MAX - 1, stdin);
     cortaFinal(filme[pos].nome);
 
@@ -287,7 +289,7 @@ void cadastraFilme(TFilme *filme, int pos){
 
 void imprimeTodos(TFilme *filme, int n){
     system("cls");
-    printf("--Lista de filmes--\n\n");
+    printf(AZUL"--Lista de filmes--\n\n"RESET);
     int i;
 
     printf("\n---------------------------------------------------\n");
@@ -314,17 +316,19 @@ void pesquisaFilme(TFilme *filme,int n){
     int i;
     char resposta[MAX];
     char nomeMin[MAX];
-    printf("--Pesquisar filme--\n\nDigite o nome do filme: ");
+    printf(AZUL"--Pesquisar filme--"RESET"\n\nDigite o nome do filme: ");
     fgets(resposta, MAX-1, stdin);
     cortaFinal(resposta);
     //To fazendo essa fuleragem pq quero comparar o nome do filme como condição na pesquisa
     //MAS não quero que seja "case sensitive" pro usuario poder digitar o nome do jeito que quiser
     strcpy(resposta, toLowerCase(resposta));
-
+	
+	
     for(i = 0; i < n; i++){
 
-        strcpy(nomeMin, toLowerCase(filme[i].nome));
-
+        strcpy(nomeMin, filme[i].nome);
+        //Não consegui fazer uma função que não alterasse o valor original, ai copio primeiro e depois uso o tolowerCase na copia :)
+		toLowerCase(nomeMin);
         if((strcmp(resposta, nomeMin) == 0) &&filme[i].status == true){
 
             encontrado = true;
@@ -350,7 +354,7 @@ void pesquisaFilme(TFilme *filme,int n){
 void removerFilme(TFilme *filme, int n){
     system("cls");
     int id, i;
-    printf("--Remover filme--\n\nDigite o ID do filme: ");
+    printf(AZUL"--Remover filme--"RESET"\n\nDigite o ID do filme: ");
     scanf("%d", &id);
     getchar();
 
@@ -374,7 +378,7 @@ void removerFilme(TFilme *filme, int n){
 void atualizaFilme(TFilme *filme, int n){
     system("cls");
     int id,i, op,sair;
-    printf("\n--Atualizar filme--\n\nDigite o ID do filme: ");
+    printf(AZUL"\n--Atualizar filme--"RESET"\n\nDigite o ID do filme: ");
     scanf("%d", &id);
     getchar();
 
@@ -442,7 +446,7 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
     int i, chave = 0, id;
     char cpf[CPF];
 
-    printf("\n--Alugar filme--\nEntre com o cpf do cliente: ");
+    printf(AZUL"--Alugar filme--\n\n"RESET"Entre com o cpf do cliente: ");
     fgets(cpf, CPF-1, stdin);
     cortaFinal(cpf);
     //não tive coragem de ir atrás de tabela hash pra isso
@@ -500,7 +504,7 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
 int imprimeMenuClientes(){
     system("cls");
     int op;
-    printf("--Menu Clientes--");
+    printf(AZUL"--Menu Clientes--"RESET);
     printf("\n\n1-Cadastrar cliente");
     printf("\n2-Pesquisar cadastro");
     printf("\n3-Exibir lista de cadastros");
@@ -578,6 +582,7 @@ void executaMenuCliente(int op, int *m, TCliente **cliente){
 int imprimeMenuFilmes(){
     system("cls");
     int op;
+    printf(AZUL"--Menu Filmes--\n\n"RESET);
     printf("1-Cadastrar filme");
     printf("\n2-Pesquisar filme");
     printf("\n3-Exibir lista de filmes");
@@ -591,9 +596,10 @@ int imprimeMenuFilmes(){
     Sleep(1000);
     return op;
 }
-
+//aqui o ponteiro é duplo pq ele realmente vai acessar e mudar o conteudo daquele endereço de memória
+//no resto como não vou mudar o valor em si, apenas uso de referencia para acessar o amigo
 void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente){
-
+	
         switch(op){
 
             case 1:
@@ -652,7 +658,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
             break;
 
         case 7:
-            printf(VERDE"\n\nOperações encerradas!"RESET);
+            printf(VERDE"\n\nRetornando ao menu principal!"RESET);
             break;
 
         default:
@@ -673,7 +679,7 @@ int main (){
     TFilme *filme = NULL;
     do{
         system("cls");
-        printf("--Menus--");
+        printf(AZUL"--Menus--"RESET);
         printf("\n\n1-Menu Clientes\n2-Menu Filmes\n3-Sair\n\nOpção: ");
         scanf("%d", &resposta);
         getchar();
@@ -694,7 +700,7 @@ int main (){
                 printf(VERDE"\n\nEncerrando operações!"RESET);
                 break;
             default:
-                printf("\n\nOpção inválida!");
+                printf(VERMELHO"\n\nOpção inválida!"RESET);
                 break;
         }
 
