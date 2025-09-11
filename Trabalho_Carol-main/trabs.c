@@ -47,7 +47,8 @@ void cortaFinal(char *s){
     if (len > 0 && s[len-1] == '\n') s[len-1] = '\0';
 }
 
-
+//Não consegui arrumar essa função para retornar o valor sem alterar o original
+//por algum motivo maligno isso buga o strcpy que eu faço nas pesquisas
 char* toLowerCase(char *str) {
     int i;
 	for (i = 0; str[i] != '\0'; i++) {
@@ -61,6 +62,7 @@ char* toLowerCase(char *str) {
 int imprimeMenuClientes(){
     system("cls");
     int op;
+
     printf(AZUL"--Menu Clientes--"RESET);
     printf("\n\n1-Cadastrar cliente");
     printf("\n2-Pesquisar cadastro");
@@ -71,6 +73,7 @@ int imprimeMenuClientes(){
     printf("\n\nOpção: ");
     scanf("%d", &op);
     getchar();
+
     return op;
 }
 
@@ -114,9 +117,11 @@ void cadastraCliente(TCliente *cliente, int pos){
 //Deve ser pelo CPF
 void atualizaCliente(TCliente *cliente, int m){
     system("cls");
+
     int id, i, op, sair, chave = 0;
     char resposta[CPF];
     bool encontrou = false;
+
     printf(AZUL"\n--Atualizar dados do Clinete--"RESET"\n\nDigite o CPF do cliente(apenas números): ");
     fgets(resposta, CPF - 1, stdin);
     cortaFinal(resposta);
@@ -148,6 +153,7 @@ void atualizaCliente(TCliente *cliente, int m){
        printf("Alterar: \n1-Nome\n2-CPF\n3-Telefone\n4-Endereço\n\nOpção: ");
        scanf("%d", &op);
        getchar();
+
        switch(op){
 
         case 1:
@@ -183,19 +189,23 @@ void atualizaCliente(TCliente *cliente, int m){
        printf("\n\nDeseja alterar outro campo? (1-Sim/2-Não)\nOpção: ");
        scanf("%d", &sair);
        getchar();
+
        Sleep(500);
        system("cls");
-    } while (sair != 2);
-    Sleep(500);
 
+    } while (sair != 2);
+
+    Sleep(500);
 }
 
 //Deve ser pelo CPF
 void removeCliente(TCliente *cliente, int m){
     system("cls");
+
     int chave = 0, i;
     bool encontrou = false;
     char cpf[CPF];
+
     printf(AZUL"--Remover cliente--"RESET);
     printf("\n\nDigite o cpf do cliente (apenas números): ");
     fgets(cpf, CPF-1, stdin);
@@ -226,6 +236,7 @@ void imprimeTodosCli(TCliente *cliente, int m){
     system("cls");
     printf(AZUL"--Lista de clientes--\n\n"RESET);
     printf("\n---------------------------------------------------\n");
+
     for(i = 0; i < m; i++){
         if(cliente[i].status){
             printf("\nID: %d", cliente[i].id);
@@ -236,17 +247,19 @@ void imprimeTodosCli(TCliente *cliente, int m){
             printf("\n---------------------------------------------------\n");
         }
     }
+
     printf("\n\n");
     system("pause");
-
 }
 
 //Deve ser pelo CPF
 void pesquisaCliente(TCliente *cliente, int m){
     system("cls");
+
     bool encontrou = false;
     int i, chave = 0;
     char cpf[MAX];
+
     printf(AZUL"--Pesquisar cliente--"RESET"\n\nDigite o CPF do cliente: ");
     fgets(cpf, MAX-1, stdin);
 
@@ -276,6 +289,7 @@ void pesquisaCliente(TCliente *cliente, int m){
     printf("\nCPF: %s", cliente[i].cpf);
     printf("\nTelefone: %s", cliente[i].telefone);
     printf("\nEndereço: %s", cliente[i].endereco);
+
     printf("\n\n");
     system("pause");
 }
@@ -291,6 +305,10 @@ void executaMenuCliente(int op, int *m, TCliente **cliente){
                 *cliente = (TCliente *) malloc(sizeof(TCliente));
             } else {
                 *cliente = (TCliente *) realloc(*cliente, *m * sizeof(TCliente));
+            }
+            if(*cliente == NULL){
+                printf("Erro em alocação de memmória\n");
+                exit(1);
             }
             cadastraCliente(*cliente, *m-1);
             break;
@@ -360,6 +378,7 @@ void menuClientes(int *m, TCliente **cliente){
 int imprimeMenuFilmes(){
     system("cls");
     int op;
+
     printf(AZUL"--Menu Filmes--\n\n"RESET);
     printf("1-Cadastrar filme");
     printf("\n2-Pesquisar filme");
@@ -371,6 +390,7 @@ int imprimeMenuFilmes(){
     printf("\n\nOpção: ");
     scanf("%d", &op);
     getchar();
+
     Sleep(500);
     return op;
 }
@@ -386,11 +406,14 @@ void cadastraFilme(TFilme *filme, int pos){
 
     printf("\nCategoria do filme: ");
     fgets(filme[pos].categoria, MAX-1, stdin);
+
     printf("\nFaixa Etária: ");
     fgets(filme[pos].faixaEtaria, FE-1, stdin);
+
     printf("\nPreço: ");
     scanf("%f", &filme[pos].preco);
     getchar();
+
     printf("\nQuantidade disponível: ");
     scanf("%d", &filme[pos].quantidade);
     getchar();
@@ -429,6 +452,7 @@ void pesquisaFilme(TFilme *filme,int n){
     int i;
     char resposta[MAX];
     char nomeMin[MAX];
+
     printf(AZUL"--Pesquisar filme--"RESET"\n\nDigite o nome do filme: ");
     fgets(resposta, MAX-1, stdin);
     cortaFinal(resposta);
@@ -462,12 +486,12 @@ void pesquisaFilme(TFilme *filme,int n){
     printf("\nQuantidade disponível: %d\n\n", filme[i].quantidade);
 
     system("pause");
-
 }
 
 void removerFilme(TFilme *filme, int n){
     system("cls");
     int id, i;
+
     printf(AZUL"--Remover filme--"RESET"\n\nDigite o ID do filme: ");
     scanf("%d", &id);
     getchar();
@@ -492,6 +516,7 @@ void removerFilme(TFilme *filme, int n){
 void atualizaFilme(TFilme *filme, int n){
     system("cls");
     int id,i, op,sair;
+
     printf(AZUL"\n--Atualizar filme--"RESET"\n\nDigite o ID do filme: ");
     scanf("%d", &id);
     getchar();
@@ -505,50 +530,50 @@ void atualizaFilme(TFilme *filme, int n){
     system("cls");
 
     do{
-    printf("\nAlterar: \n1-Nome\n2-Categoria\n3-Faixa Etária\n4-Preço\n5-Quantidade disponível\nOpção: \n");
-    scanf(" %d", &op);
-    getchar();
-
-    switch(op){
-
-        case 1:
-            printf("Nome: ");
-            fgets(filme[id].nome, MAX-1, stdin);
-            printf(VERDE"\n\nNome alterado com sucesso!"RESET);
-            break;
-
-        case 2:
-            printf("Categoria: ");
-            fgets(filme[id].categoria, MAX - 1, stdin);
-            printf(VERDE"\n\nCategoria alterada com sucesso!"RESET);
-            break;
-
-        case 3:
-            printf("Faixa etária: ");
-            fgets(filme[id].faixaEtaria, 5, stdin);
-            printf(VERDE"\n\nFaixa etária alterada com sucesso!"RESET);
-            break;
-
-        case 4:
-            printf("Preço: ");
-            scanf("%f", &filme[id].preco);
-            getchar();
-            printf(VERDE"\n\nPreço alterado com sucesso!"RESET);
-            break;
-
-        case 5:
-            printf("Quantidade disponível: ");
-            scanf("%d", &filme[id].quantidade);
-            printf(VERDE"\n\nQuantidade alterada com sucesso!"RESET);
-            getchar();
-            break;
-    }
-        printf("\n\nDeseja alterar outro campo? (1-Sim/2-Não)\nOpção: ");
-        scanf("%d", &sair);
+        printf("\nAlterar: \n1-Nome\n2-Categoria\n3-Faixa Etária\n4-Preço\n5-Quantidade disponível\nOpção: \n");
+        scanf(" %d", &op);
         getchar();
-        system("cls");
 
-   } while(sair != 2);
+        switch(op){
+
+            case 1:
+                printf("Nome: ");
+                fgets(filme[id].nome, MAX-1, stdin);
+                printf(VERDE"\n\nNome alterado com sucesso!"RESET);
+                break;
+
+            case 2:
+                printf("Categoria: ");
+                fgets(filme[id].categoria, MAX - 1, stdin);
+                printf(VERDE"\n\nCategoria alterada com sucesso!"RESET);
+                break;
+
+            case 3:
+                printf("Faixa etária: ");
+                fgets(filme[id].faixaEtaria, 5, stdin);
+                printf(VERDE"\n\nFaixa etária alterada com sucesso!"RESET);
+                break;
+
+            case 4:
+                printf("Preço: ");
+                scanf("%f", &filme[id].preco);
+                getchar();
+                printf(VERDE"\n\nPreço alterado com sucesso!"RESET);
+                break;
+
+            case 5:
+                printf("Quantidade disponível: ");
+                scanf("%d", &filme[id].quantidade);
+                printf(VERDE"\n\nQuantidade alterada com sucesso!"RESET);
+                getchar();
+                break;
+        }
+            printf("\n\nDeseja alterar outro campo? (1-Sim/2-Não)\nOpção: ");
+            scanf("%d", &sair);
+            getchar();
+            system("cls");
+
+    } while(sair != 2);
     Sleep(500);
 }
 
@@ -593,6 +618,7 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
     printf("\nDigite o ID do filme: ");
     scanf("%d", &id);
     getchar();
+
     if(id < 0 || id >=n || !filme[id].status){
         printf(VERMELHO"\n\nFilme não encontrado!"RESET);
         Sleep(500);
@@ -618,7 +644,6 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
 //aqui o ponteiro é duplo pq ele realmente vai acessar e mudar o conteudo daquele endereço de memória de um ponteiro que ta foi declarado fora do escopo da função, criando um ponteiro de ponteiro(**)
 //no resto como não vou mudar o valor em si, apenas uso de referencia para acessar o amigo
 
-
 void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente){
 
         switch(op){
@@ -630,6 +655,12 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
                 }else{
                     *filme = (TFilme *) realloc(*filme, *n * sizeof(TFilme));
                 }
+
+                if(*filme == NULL){
+                    printf("Erro em alocação de memória\n");
+                    exit(1);
+                }
+
                 cadastraFilme(*filme, *n-1);
 
 
@@ -707,11 +738,10 @@ void menuFilmes(int *n, int *m, TFilme **filme, TCliente *cliente){
 
 int main (){
     setlocale(LC_ALL, "Portuguese");
-    int n,m;
+    int n, m, resposta, a;
     n = 0;
     m = 0;
 
-    int resposta, a;
     TCliente *cliente = NULL;
     TFilme *filme = NULL;
     do{
@@ -742,7 +772,7 @@ int main (){
 
         Sleep(500);
 
-    } while (resposta != 3);
+    } while(resposta != 3);
 
     return 0;
 }
