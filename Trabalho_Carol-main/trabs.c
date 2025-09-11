@@ -57,6 +57,23 @@ char* toLowerCase(char *str) {
 }
 
 
+//--------------------------Clientes-------------------------------------------------//
+int imprimeMenuClientes(){
+    system("cls");
+    int op;
+    printf(AZUL"--Menu Clientes--"RESET);
+    printf("\n\n1-Cadastrar cliente");
+    printf("\n2-Pesquisar cadastro");
+    printf("\n3-Exibir lista de cadastros");
+    printf("\n4-Atualizar cadastro");
+    printf("\n5-Remover cadastro");
+    printf("\n6-Sair");
+    printf("\n\nOpção: ");
+    scanf("%d", &op);
+    getchar();
+    return op;
+}
+
 void cadastraCliente(TCliente *cliente, int pos){
     int i;
     system("cls");
@@ -122,7 +139,7 @@ void atualizaCliente(TCliente *cliente, int m){
         printf(VERMELHO"\n\nCadastro do cliente não foi encontrado!"RESET);
         return;
     }
-    Sleep(1000);
+    Sleep(500);
     system("cls");
 
     op = 0;
@@ -159,7 +176,7 @@ void atualizaCliente(TCliente *cliente, int m){
 
         default:
             printf("\nOpção inválida!");
-            Sleep(1000);
+            Sleep(500);
             break;
        }
 
@@ -169,7 +186,7 @@ void atualizaCliente(TCliente *cliente, int m){
        Sleep(500);
        system("cls");
     } while (sair != 2);
-    Sleep(1000);
+    Sleep(500);
 
 }
 
@@ -201,7 +218,7 @@ void removeCliente(TCliente *cliente, int m){
     }
 
     printf(VERMELHO"\n\nCadastro não encontrado ou inativo!"RESET);
-    Sleep(2000);
+    Sleep(500);
 }
 
 void imprimeTodosCli(TCliente *cliente, int m){
@@ -221,6 +238,7 @@ void imprimeTodosCli(TCliente *cliente, int m){
     }
     printf("\n\n");
     system("pause");
+
 }
 
 //Deve ser pelo CPF
@@ -260,6 +278,101 @@ void pesquisaCliente(TCliente *cliente, int m){
     printf("\nEndereço: %s", cliente[i].endereco);
     printf("\n\n");
     system("pause");
+}
+
+void executaMenuCliente(int op, int *m, TCliente **cliente){
+
+    switch(op){
+
+        case 1:
+
+            (*m)++;
+            if(*m == 1){
+                *cliente = (TCliente *) malloc(sizeof(TCliente));
+            } else {
+                *cliente = (TCliente *) realloc(*cliente, *m * sizeof(TCliente));
+            }
+            cadastraCliente(*cliente, *m-1);
+            break;
+
+        case 2:
+            if(*m == 0){
+               printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+               Sleep(500);
+
+               break;
+           }
+            pesquisaCliente(*cliente, *m);
+            break;
+
+        case 3:
+
+            if(*m == 0){
+                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+                Sleep(500);
+                break;
+            }
+            imprimeTodosCli(*cliente, *m);
+            break;
+
+        case 4:
+
+            if(*m == 0){
+                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+                Sleep(500);
+                break;
+            }
+            atualizaCliente(*cliente, *m);
+            break;
+
+        case 5:
+
+            if(*m == 0){
+                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+                Sleep(500);
+                break;
+            }
+            removeCliente(*cliente, *m);
+            break;
+
+        case 6:
+            printf(VERDE"\n\nRetornando ao menu principal!"RESET);
+            Sleep(500);
+            break;
+
+        default:
+            printf(VERMELHO"\n\nOpção inválida!"RESET);
+            Sleep(500);
+            break;
+    }
+}
+
+void menuClientes(int *m, TCliente **cliente){
+    int op;
+    do{
+        op = imprimeMenuClientes();
+        executaMenuCliente(op,m,cliente);
+    } while (op!=7);
+}
+
+//--------------------------Filmes-------------------------------------------------//
+
+int imprimeMenuFilmes(){
+    system("cls");
+    int op;
+    printf(AZUL"--Menu Filmes--\n\n"RESET);
+    printf("1-Cadastrar filme");
+    printf("\n2-Pesquisar filme");
+    printf("\n3-Exibir lista de filmes");
+    printf("\n4-Atualizar filme");
+    printf("\n5-Remover filme");
+    printf("\n6-Alugar filme");
+    printf("\n7-Sair");
+    printf("\n\nOpção: ");
+    scanf("%d", &op);
+    getchar();
+    Sleep(500);
+    return op;
 }
 
 void cadastraFilme(TFilme *filme, int pos){
@@ -322,8 +435,8 @@ void pesquisaFilme(TFilme *filme,int n){
     //To fazendo essa fuleragem pq quero comparar o nome do filme como condição na pesquisa
     //MAS não quero que seja "case sensitive" pro usuario poder digitar o nome do jeito que quiser
     strcpy(resposta, toLowerCase(resposta));
-	
-	
+
+
     for(i = 0; i < n; i++){
 
         strcpy(nomeMin, filme[i].nome);
@@ -349,6 +462,7 @@ void pesquisaFilme(TFilme *filme,int n){
     printf("\nQuantidade disponível: %d\n\n", filme[i].quantidade);
 
     system("pause");
+
 }
 
 void removerFilme(TFilme *filme, int n){
@@ -360,18 +474,18 @@ void removerFilme(TFilme *filme, int n){
 
     if(id < 0 || id >= n){
         printf(VERMELHO"\n\nID inválido!"RESET);
-        Sleep(1000);
+        Sleep(500);
         return;
     }
     if(!filme[id].status){
         printf(VERMELHO"\n\nFilme já apagado!"RESET);
-        Sleep(1000);
+        Sleep(500);
         return;
     }
 
     filme[id].status = false;
     printf(VERDE"\nCadastro de filme apagado!"RESET);
-    Sleep(1000);
+    Sleep(500);
 
 }
 
@@ -387,7 +501,7 @@ void atualizaFilme(TFilme *filme, int n){
         atualizaFilme(filme,n);
         return;
     }
-    Sleep(1000);
+    Sleep(500);
     system("cls");
 
     do{
@@ -435,8 +549,7 @@ void atualizaFilme(TFilme *filme, int n){
         system("cls");
 
    } while(sair != 2);
-            Sleep(1000);
-
+    Sleep(500);
 }
 
 void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
@@ -470,11 +583,11 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
 
     if(!encontrou){
             printf(VERMELHO"\n\nCliente não encontrado!"RESET);
-            Sleep(1000);
+            Sleep(500);
             return;
         }
 
-    Sleep(1000);
+    Sleep(500);
     system("cls");
     printf("--Alugar filme--\n");
     printf("\nDigite o ID do filme: ");
@@ -482,13 +595,13 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
     getchar();
     if(id < 0 || id >=n || !filme[id].status){
         printf(VERMELHO"\n\nFilme não encontrado!"RESET);
-        Sleep(1000);
+        Sleep(500);
         return;
     }
 
     if(filme[id].quantidade == 0){
         printf(VERMELHO"\n\nSem estoque para esse filme!"RESET);
-        Sleep(1000);
+        Sleep(500);
         return;
     }
 
@@ -499,107 +612,15 @@ void alugaFilme(TFilme *filme, TCliente *cliente, int n, int m){
     printf("\nQuantidades disponíveis: %d", filme[id].quantidade);
     printf("\n\n");
     system("pause");
+    return;
 }
 
-int imprimeMenuClientes(){
-    system("cls");
-    int op;
-    printf(AZUL"--Menu Clientes--"RESET);
-    printf("\n\n1-Cadastrar cliente");
-    printf("\n2-Pesquisar cadastro");
-    printf("\n3-Exibir lista de cadastros");
-    printf("\n4-Atualizar cadastro");
-    printf("\n5-Remover cadastro");
-    printf("\n6-Sair");
-    printf("\n\nOpção: ");
-    scanf("%d", &op);
-    getchar();
-    return op;
-}
-
-void executaMenuCliente(int op, int *m, TCliente **cliente){
-
-    switch(op){
-
-        case 1:
-
-            (*m)++;
-            if(*m == 1){
-                *cliente = (TCliente *) malloc(sizeof(TCliente));
-            } else {
-                *cliente = (TCliente *) realloc(*cliente, *m * sizeof(TCliente));
-            }
-            cadastraCliente(*cliente, *m-1);
-            break;
-
-        case 2:
-            if(*m == 0){
-               printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
-               break;
-           }
-            pesquisaCliente(*cliente, *m);
-            break;
-
-        case 3:
-
-            if(*m == 0){
-                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
-                break;
-            }
-            imprimeTodosCli(*cliente, *m);
-            break;
-
-        case 4:
-
-            if(*m == 0){
-                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
-                break;
-            }
-            atualizaCliente(*cliente, *m);
-            break;
-
-        case 5:
-
-            if(*m == 0){
-                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
-                break;
-            }
-            removeCliente(*cliente, *m);
-            break;
-
-        case 6:
-
-            printf(VERDE"\n\nRetornando ao menu principal!"RESET);
-            Sleep(1000);
-            break;
-
-        default:
-            printf(VERMELHO"\n\nOpção inválida!"RESET);
-            break;
-    }
-}
-
-int imprimeMenuFilmes(){
-    system("cls");
-    int op;
-    printf(AZUL"--Menu Filmes--\n\n"RESET);
-    printf("1-Cadastrar filme");
-    printf("\n2-Pesquisar filme");
-    printf("\n3-Exibir lista de filmes");
-    printf("\n4-Atualizar filme");
-    printf("\n5-Remover filme");
-    printf("\n6-Alugar filme");
-    printf("\n7-Sair");
-    printf("\n\nOpção: ");
-    scanf("%d", &op);
-    getchar();
-    Sleep(1000);
-    return op;
-}
-//aqui o ponteiro é duplo pq ele realmente vai acessar e mudar o conteudo daquele endereço de memória
+//aqui o ponteiro é duplo pq ele realmente vai acessar e mudar o conteudo daquele endereço de memória de um ponteiro que ta foi declarado fora do escopo da função, criando um ponteiro de ponteiro(**)
 //no resto como não vou mudar o valor em si, apenas uso de referencia para acessar o amigo
+
+
 void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente){
-	
+
         switch(op){
 
             case 1:
@@ -611,12 +632,14 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
                 }
                 cadastraFilme(*filme, *n-1);
 
+
             break;
 
         case 2:
             if(*n == 0){
                 printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
-               break;
+                Sleep(500);
+                break;
             }
             pesquisaFilme(*filme, *n);
             break;
@@ -625,6 +648,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
             if(*n == 0){
                 printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+                Sleep(500);
                 break;
             }
             imprimeTodos(*filme, *n);
@@ -634,6 +658,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
             if(*n == 0){
                 printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+                Sleep(500);
                 break;
             }
             atualizaFilme(*filme,*n);
@@ -643,6 +668,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
             if(*n == 0){
                 printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+                Sleep(500);
                 break;
             }
             removerFilme(*filme,*n);
@@ -652,6 +678,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
             if(*n == 0){
                 printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+                Sleep(500);
                 break;
             }
             alugaFilme(*filme,cliente,*n,*m);
@@ -659,14 +686,24 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
         case 7:
             printf(VERDE"\n\nRetornando ao menu principal!"RESET);
+            Sleep(500);
             break;
 
         default:
             printf(VERMELHO"\n\nOpção inválida!"RESET);
-
+            Sleep(500);
+            break;
         }
 
     }
+
+void menuFilmes(int *n, int *m, TFilme **filme, TCliente *cliente){
+    int op;
+    do{
+        op = imprimeMenuFilmes();
+        executaMenuFilmes(op,n,m,filme,cliente);
+    } while(op!=7);
+}
 
 int main (){
     setlocale(LC_ALL, "Portuguese");
@@ -687,13 +724,12 @@ int main (){
         switch(resposta){
 
             case 1:
-                 a = imprimeMenuClientes();
-                executaMenuCliente(a,&m,&cliente);
+
+                menuClientes(&m,&cliente);
                 break;
 
             case 2:
-                 a = imprimeMenuFilmes();
-                executaMenuFilmes(a,&n,&m,&filme, cliente);
+                menuFilmes(&n,&m,&filme, cliente);
                 break;
 
             case 3:
@@ -704,7 +740,7 @@ int main (){
                 break;
         }
 
-        Sleep(1000);
+        Sleep(500);
 
     } while (resposta != 3);
 
