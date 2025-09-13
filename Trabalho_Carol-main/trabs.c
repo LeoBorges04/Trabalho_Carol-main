@@ -219,7 +219,7 @@ void removeCliente(TCliente *cliente, int m){
     }
 
     for(i = 0; i < m; i++){
-        if(chave == cliente[i].chave && cliente[i].id){
+        if(chave == cliente[i].chave && cliente[i].status){
             printf(VERDE"\n\nCadastro do cliente apagado com sucesso!\n\n"RESET);
             cliente[i].status = false;
             system("pause");
@@ -345,12 +345,14 @@ void executaMenuCliente(int op, int *m, TCliente **cliente){
 
         case 5:
 
-            if(*m == 0){
-                printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+            if(*m > 0){
+                removeCliente(*cliente, *m);
+                *m--;
                 Sleep(500);
                 break;
             }
-            removeCliente(*cliente, *m);
+            printf(VERMELHO"\n\nNão há cadastro de clientes!"RESET);
+            Sleep(500);
             break;
 
         case 6:
@@ -370,7 +372,7 @@ void menuClientes(int *m, TCliente **cliente){
     do{
         op = imprimeMenuClientes();
         executaMenuCliente(op,m,cliente);
-    } while (op!=7);
+    } while (op!=6);
 }
 
 //--------------------------Filmes-------------------------------------------------//
@@ -697,12 +699,14 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
         case 5:
 
-            if(*n == 0){
-                printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+            if(*n > 0){
+                removerFilme(*filme,*n);
+                *n--;
                 Sleep(500);
                 break;
             }
-            removerFilme(*filme,*n);
+            printf(VERMELHO"\n\nNão há filmes cadastrados!"RESET);
+            Sleep(500);
             break;
 
         case 6:
