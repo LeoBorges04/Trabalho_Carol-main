@@ -49,12 +49,11 @@ void cortaFinal(char *s){
 
 //Não consegui arrumar essa função para retornar o valor sem alterar o original
 //por algum motivo maligno isso buga o strcpy que eu faço nas pesquisas
-char* toLowerCase(char *str) {
+void toLowerCase(char *str) {
     int i;
 	for (i = 0; str[i] != '\0'; i++) {
         str[i] = tolower((unsigned char) str[i]);
-    }
-    return str;
+	}
 }
 
 
@@ -464,7 +463,7 @@ void pesquisaFilme(TFilme *filme,int *n){
     cortaFinal(resposta);
     //To fazendo essa fuleragem pq quero comparar o nome do filme como condição na pesquisa
     //MAS não quero que seja "case sensitive" pro usuario poder digitar o nome do jeito que quiser
-    strcpy(resposta, toLowerCase(resposta));
+    toLowerCase(resposta);
 
 
     for(i = 0; i < *n; i++){
