@@ -118,7 +118,7 @@ void cadastraCliente(TCliente *cliente, int pos){
 void atualizaCliente(TCliente *cliente, int m){
     system("cls");
 
-    int id, i, op, sair, chave = 0;
+    int i, op, sair, chave = 0;
     char resposta[CPF];
     bool encontrou = false;
 
@@ -202,8 +202,8 @@ void atualizaCliente(TCliente *cliente, int m){
 void removeCliente(TCliente **cliente, int *m){
     system("cls");
 
-    int chave = 0, ,i,j;
-    bool encontrou = false;
+    int chave = 0, i,j;
+   
     char cpf[CPF];
 
     printf(AZUL"--Remover cliente--"RESET);
@@ -351,7 +351,7 @@ void executaMenuCliente(int op, int *m, TCliente **cliente){
         case 5:
 
             if(*m > 0){
-                removeCliente(*cliente, *m);
+                removeCliente(cliente, m);
                 Sleep(500);
                 break;
             }
@@ -467,7 +467,7 @@ void pesquisaFilme(TFilme *filme,int *n){
     strcpy(resposta, toLowerCase(resposta));
 
 
-    for(i = 0; i < n; i++){
+    for(i = 0; i < *n; i++){
 
         strcpy(nomeMin, filme[i].nome);
         //Não consegui fazer uma função que não alterasse o valor original, ai copio primeiro e depois uso o tolowerCase na copia :)
@@ -494,7 +494,7 @@ void pesquisaFilme(TFilme *filme,int *n){
     system("pause");
 }
 
-void removerFilme(TFilme **filme, int n){
+void removerFilme(TFilme **filme, int *n){
     system("cls");
     int id, i;
 
@@ -502,7 +502,7 @@ void removerFilme(TFilme **filme, int n){
     scanf("%d", &id);
     getchar();
 
-    if(id < 0 || id >= n){
+    if(id < 0 || id >= *n){
         printf(VERMELHO"\n\nID inválido!"RESET);
         Sleep(500);
         return;
@@ -514,7 +514,7 @@ void removerFilme(TFilme **filme, int n){
     }
 
     (*n)--;
-    *filme = realoc(*filme, (*n) * sizeof(TFilme));    
+    (*filme) = realloc(*filme, (*n) * sizeof(TFilme));    
 
     printf(VERDE"\nCadastro de filme apagado!"RESET);
     Sleep(500);
@@ -523,7 +523,7 @@ void removerFilme(TFilme **filme, int n){
 
 void atualizaFilme(TFilme *filme, int n){
     system("cls");
-    int id,i, op,sair;
+    int id, op,sair;
 
     printf(AZUL"\n--Atualizar filme--"RESET"\n\nDigite o ID do filme: ");
     scanf("%d", &id);
@@ -680,7 +680,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
                 Sleep(500);
                 break;
             }
-            pesquisaFilme(*filme, *n);
+            pesquisaFilme(*filme, n);
             break;
 
         case 3:
@@ -700,13 +700,13 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
                 Sleep(500);
                 break;
             }
-            atualizaFilme(*filme,*n);
+            atualizaFilme(*filme, *n);
             break;
 
         case 5:
 
             if(*n > 0){
-                removerFilme(*filme,*n);
+                removerFilme(filme,n);
                 Sleep(500);
                 break;
             }
@@ -747,7 +747,7 @@ void menuFilmes(int *n, int *m, TFilme **filme, TCliente *cliente){
 
 int main (){
     setlocale(LC_ALL, "Portuguese");
-    int n, m, resposta, a;
+    int n, m, resposta;
     n = 0;
     m = 0;
 
