@@ -199,10 +199,10 @@ void atualizaCliente(TCliente *cliente, int m){
 }
 
 //Deve ser pelo CPF
-void removeCliente(TCliente *cliente, int m){
+void removeCliente(TCliente **cliente, int *m){
     system("cls");
 
-    int chave = 0, i;
+    int chave = 0, ,i,j;
     bool encontrou = false;
     char cpf[CPF];
 
@@ -218,10 +218,15 @@ void removeCliente(TCliente *cliente, int m){
         }
     }
 
-    for(i = 0; i < m; i++){
-        if(chave == cliente[i].chave && cliente[i].status){
+    for(i = 0; i < *m; i++){
+        if(chave == (*cliente)[i].chave && (*cliente)[i].status){
+            for(j = i; j < *m - 1; j++){
+                (*cliente)[j] = (*cliente)[j + 1];
+                (*cliente)[j].id = j;
+            }
+            (*m)--;
+            *cliente = realloc(*cliente, (*m) * sizeof(TCliente));
             printf(VERDE"\n\nCadastro do cliente apagado com sucesso!\n\n"RESET);
-            cliente[i].status = false;
             system("pause");
             return;
         }
@@ -347,7 +352,6 @@ void executaMenuCliente(int op, int *m, TCliente **cliente){
 
             if(*m > 0){
                 removeCliente(*cliente, *m);
-                *m--;
                 Sleep(500);
                 break;
             }
@@ -448,7 +452,7 @@ void imprimeTodos(TFilme *filme, int n){
 
 }
 
-void pesquisaFilme(TFilme *filme,int n){
+void pesquisaFilme(TFilme *filme,int *n){
     system("cls");
     bool encontrado = false;
     int i;
@@ -490,7 +494,7 @@ void pesquisaFilme(TFilme *filme,int n){
     system("pause");
 }
 
-void removerFilme(TFilme *filme, int n){
+void removerFilme(TFilme **filme, int n){
     system("cls");
     int id, i;
 
@@ -503,13 +507,15 @@ void removerFilme(TFilme *filme, int n){
         Sleep(500);
         return;
     }
-    if(!filme[id].status){
-        printf(VERMELHO"\n\nFilme já apagado!"RESET);
-        Sleep(500);
-        return;
+    
+    for(i = id; i < *n - 1; i++){
+        (*filme)[i] = (*filme)[i+1];
+        (*filme)[i].id = i;
     }
 
-    filme[id].status = false;
+    (*n)--;
+    *filme = realoc(*filme, (*n) * sizeof(TFilme));    
+
     printf(VERDE"\nCadastro de filme apagado!"RESET);
     Sleep(500);
 
@@ -701,7 +707,6 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
             if(*n > 0){
                 removerFilme(*filme,*n);
-                *n--;
                 Sleep(500);
                 break;
             }
