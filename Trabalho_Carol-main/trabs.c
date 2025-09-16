@@ -41,23 +41,18 @@ typedef struct Filme {
     float preco;
 
 } TFilme;
-
+void toLowerCase(char *str) { 
+	int i; 
+	for (i = 0; str[i] != '\0'; i++) { 
+		str[i] = tolower((unsigned char) str[i]); 
+	} 
+}
 
 void cortaFinal(char *s){
     if (!s) return;
     size_t len = strlen(s);
     if (len > 0 && s[len-1] == '\n') s[len-1] = '\0';
 }
-
-//Não consegui arrumar essa função para retornar o valor sem alterar o original
-//por algum motivo maligno isso buga o strcpy que eu faço nas pesquisas
-void toLowerCase(char *str) {
-    int i;
-	for (i = 0; str[i] != '\0'; i++) {
-        str[i] = tolower((unsigned char) str[i]);
-	}
-}
-
 
 //--------------------------Clientes-------------------------------------------------//
 int imprimeMenuClientes(){
@@ -95,7 +90,7 @@ void cadastraCliente(TCliente *cliente, int pos){
     fgets(cliente[pos].telefone, TEL-1, stdin);
     cortaFinal(cliente[pos].telefone);
 
-    printf("\nCPF (apenas números): ");
+    printf("\nCPF: ");
     fgets(cliente[pos].cpf, CPF-1, stdin);
     cortaFinal(cliente[pos].cpf);
 
@@ -123,7 +118,7 @@ void atualizaCliente(TCliente *cliente, int m){
     char resposta[CPF];
     bool encontrou = false;
 
-    printf(AZUL"\n--Atualizar dados do Clinete--"RESET"\n\nDigite o CPF do cliente(apenas números): ");
+    printf(AZUL"\n--Atualizar dados do Clinete--"RESET"\n\nDigite o CPF do cliente: ");
     fgets(resposta, CPF - 1, stdin);
     cortaFinal(resposta);
 
@@ -208,7 +203,7 @@ void removeCliente(TCliente **cliente, int *m){
     char cpf[CPF];
 
     printf(AZUL"--Remover cliente--"RESET);
-    printf("\n\nDigite o cpf do cliente (apenas números): ");
+    printf("\n\nDigite o cpf do cliente: ");
     fgets(cpf, CPF-1, stdin);
     cortaFinal(cpf);
 
@@ -222,6 +217,9 @@ void removeCliente(TCliente **cliente, int *m){
     for(i = 0; i < *m; i++){
         if(chave == (*cliente)[i].chave && (*cliente)[i].status){
             for(j = i; j < *m - 1; j++){
+            	//pega o cliente da posição que queremos remover e transformamos ele no proximo
+            	//ai com cada iteração ele faz o j atual se transformar no proximo
+            	//no fim vai ter dois iguais, mas o realloc m-- remove o duplicado
                 (*cliente)[j] = (*cliente)[j + 1];
                 (*cliente)[j].id = j;
             }
@@ -471,7 +469,6 @@ void pesquisaFilme(TFilme *filme,int *n){
     for(i = 0; i < *n; i++){
 
         strcpy(nomeMin, filme[i].nome);
-        //Não consegui fazer uma função que não alterasse o valor original, ai copio primeiro e depois uso o tolowerCase na copia :)
 		toLowerCase(nomeMin);
         if((strcmp(resposta, nomeMin) == 0) &&filme[i].status == true){
 
@@ -667,6 +664,7 @@ void executaMenuFilmes(int op, int *n, int *m, TFilme **filme, TCliente *cliente
 
                 if(*filme == NULL){
                     printf("Erro em alocação de memória\n");
+                    system("pause");
                     exit(1);
                 }
 
@@ -783,6 +781,10 @@ int main (){
         Sleep(500);
 
     } while(resposta != 3);
-
+	free(cliente);
+	cliente = NULL;
+	
+	free(filme);
+	filme = NULL;
     return 0;
 }
