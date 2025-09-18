@@ -159,7 +159,7 @@ void atualizaCliente(TCliente *cliente, int m){
             break;
 
         case 2:
-            printf("\nCPF (apenas números): ");
+            printf("\nCPF: ");
             fgets(cliente[i].cpf, CPF-1, stdin);
             cortaFinal(cliente[i].cpf);
             break;
@@ -250,6 +250,7 @@ void imprimeTodosCli(TCliente *cliente, int m){
             printf("\nEndereço: %s", cliente[i].endereco);
             printf("\n---------------------------------------------------\n");
         }
+        Sleep(500);
     }
 
     printf("\n\n");
@@ -457,7 +458,7 @@ void pesquisaFilme(TFilme *filme,int *n){
     int i;
     char resposta[MAX];
     char nomeMin[MAX];
-
+    char var;
     printf(AZUL"--Pesquisar filme--"RESET"\n\nDigite o nome do filme: ");
     fgets(resposta, MAX-1, stdin);
     cortaFinal(resposta);
@@ -474,6 +475,20 @@ void pesquisaFilme(TFilme *filme,int *n){
 
             encontrado = true;
             break;
+        }
+    }
+    //caso não tenha encontrado ela inteira mas tenha uma substring nessa
+    for(i = 0; i < *n; i++){
+        strcpy(nomeMin, filme[i].nome);
+	    toLowerCase(nomeMin);
+        if(strstr(nomeMin, resposta) != NULL){
+            printf("Você quis dizer: %s? (s/n)\n", filme[i].nome);
+            scanf("%c", &var);
+            if(var == 's' || var == 'S'){
+                encontrado = true;
+				break;
+            }
+            getchar();
         }
     }
 
