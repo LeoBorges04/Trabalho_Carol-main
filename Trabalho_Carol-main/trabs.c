@@ -19,7 +19,7 @@
 //acho que to maluco
 
 //Para remover filmes e clientes acabei usando realloc, ai meio que perdeu o sentido ter o campo status nas structs. 
-
+//LEONARDO BORGES DOS SANTOS
 typedef struct Cliente{
     int id;
     bool status;
